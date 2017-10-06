@@ -33,9 +33,9 @@ def pcap(pc, protocol):
 			sys.exit("\033[91m[-]\033[0m IOError.")
 		for session in p:
 			if protocol == 'http':
-				idx, flag = 0, 0
+				idx = flag = 0
 				concat = ''
-				print blu, '\n[ Nouvelle Session = %s ]' % p[session], nat
+				print '\033[94m\n[ Nouvelle Session = %s ]\033[0m' % session
 				for pkt in p[session]:
 					if pkt.haslayer(TCP) and pkt.haslayer(Raw) and (pkt[TCP].flags == 24L or pkt[TCP].flags == 16):
 						print '\033[91m\nPacket [ %d ] -------------- Nouveau Payload -------------\033[0m \n\n' % idx
@@ -43,7 +43,7 @@ def pcap(pc, protocol):
 						load = pkt[TCP].load
 						headers = get_http_headers(load)
 						if headers is not None and ' gzip' in headers.values():
-							print load[:15]
+							print "\033[33mResponse:\033[0m",load[:15]
 							for k,v in headers.iteritems():
 								print k,':',v
 							tab = load.split('\r\n')
